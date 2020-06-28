@@ -2,190 +2,194 @@
 
 
 {% block contents %}
-<h1>Mortgage Calculator</h1>
-<p>This mortgage calculator runs all of the calculations through javascript.</p>
+<div class="row">
+    <div class="col s12">
+        <h1>Mortgage Calculator</h1>
+        <p>This mortgage calculator runs all of the calculations through javascript.</p>
 
-<h2>References</h2>
-<ul>
-    <li><a href="https://www.wikihow.com/Calculate-Mortgage-Payments">wikiHow</a></li>
-</ul>
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://www.wikihow.com/Calculate-Mortgage-Payments">wikiHow</a></li>
+        </ul>
 
-<h2>Calculator:</h2>
+        <h2>Calculator:</h2>
 
-<div>
-    <label for="balance">Balance:</label><br>
-    <input type="text" id="balance" name="balance" value="$300,000"><br>
+        <div>
+            <label for="balance">Balance:</label><br>
+            <input type="text" id="balance" name="balance" value="$300,000"><br>
 
-    <label for="rate">Interest Rate (%):</label><br>
-    <input type="number" id="rate" name="rate" value="3.0"><br>
+            <label for="rate">Interest Rate (%):</label><br>
+            <input type="number" id="rate" name="rate" value="3.0"><br>
 
-    <label for="years">Years:</label><br>
-    <input type="number" id="years" name="years" value="30"><br><br>
+            <label for="years">Years:</label><br>
+            <input type="number" id="years" name="years" value="30"><br><br>
 
-    <label for="extra">Extra Monthly:</label><br>
-    <input type="text" id="extra" name="extra" value="0.00"><br><br>
+            <label for="extra">Extra Monthly:</label><br>
+            <input type="text" id="extra" name="extra" value="0.00"><br><br>
 
-    <button class="btn" onclick="calculate()">Calculate</button><br>
-</div>
+            <button class="btn" onclick="calculate()">Calculate</button><br>
+        </div>
 
-<br>
+        <br>
 
-<div id="metrics">
-</div>
+        <div id="metrics">
+        </div>
 
 
-<br>
-<table id="table">
-    <tr>
-        <th>Month</th>
-        <th>Payment</th>
-        <th>Principal</th>
-        <th>Interest</th>
-        <th>Extra</th>
-        <th>Balance</th>
-    </tr>
-</table>
+        <br>
+        <table id="table">
+            <tr>
+                <th>Month</th>
+                <th>Payment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Extra</th>
+                <th>Balance</th>
+            </tr>
+        </table>
 
-<script>
-    var metrics_el = document.getElementById("metrics");
-    var table_el = document.getElementById("table");
-    var balance_el = document.getElementById("balance");
-    var rate_el = document.getElementById("rate");
-    var years_el = document.getElementById("years");
-    var extra_el = document.getElementById("extra");
+        <script>
+            var metrics_el = document.getElementById("metrics");
+            var table_el = document.getElementById("table");
+            var balance_el = document.getElementById("balance");
+            var rate_el = document.getElementById("rate");
+            var years_el = document.getElementById("years");
+            var extra_el = document.getElementById("extra");
 
-    function round2(value, scale) {
-        scale = typeof(scale) != "undefined" ? scale : 2;
-        var multiplicator = Math.pow(10, scale);
-        value = Math.round(value * multiplicator);
-        value = value / multiplicator;
-        return value;
-        // issue when number already in scientific notation.
-        // return +(Math.round(value + "e" + scale) + ("e-" + scale));
-    }
-    function as_currency(value){
-        var v = round2(value, 2);
-        return v.toLocaleString("en-US", {style: "currency", currency: "USD", minimumFractionDigits: 2});
-    }
-
-    function calculate_payment(balance, rate, months_remaining){
-        var p = balance;
-        var r = rate / 12/ 100;
-        var n = months_remaining;
-        var r1 = (1 + r)**n;
-        return p * ((r * r1)/(r1 -1));
-    }
-
-    function* amortization(balance, rate, years, months, extra){
-        years = typeof(years) != 'undefined' ? years : 30;
-        extra = typeof(extra) != 'undefined' ? extra : 0.0;
-        if(typeof(months) == 'undefined' || months == null) {
-            months = years * 12;
-        }
-
-        var r = rate / 100 / 12;
-        var total_extra = 0;
-        var total_interest = 0;
-        var total_paid = 0;
-        var month = 0;
-        var interest, principal, payment, pmnt;
-
-        var monthly = calculate_payment(balance, rate, months);
-
-        while (balance > 0) {
-            interest = balance * r;
-            principal = monthly - interest;
-            balance = balance - (principal + extra);
-            payment = monthly + extra;
-
-            if (round2(balance, 2) <= 0){
-                balance = round2(balance, 2);
-
-                // Remove negative from extra first
-                payment += balance; // Balance is negative
-                extra += balance;
-                if (extra < 0){
-                    principal += extra;
-                    extra = 0;
-                }
-
-                balance = 0;
+            function round2(value, scale) {
+                scale = typeof(scale) != "undefined" ? scale : 2;
+                var multiplicator = Math.pow(10, scale);
+                value = Math.round(value * multiplicator);
+                value = value / multiplicator;
+                return value;
+                // issue when number already in scientific notation.
+                // return +(Math.round(value + "e" + scale) + ("e-" + scale));
+            }
+            function as_currency(value){
+                var v = round2(value, 2);
+                return v.toLocaleString("en-US", {style: "currency", currency: "USD", minimumFractionDigits: 2});
             }
 
-            total_extra += extra;
-            total_interest += interest;
-            total_paid += payment;
-            month += 1;
+            function calculate_payment(balance, rate, months_remaining){
+                var p = balance;
+                var r = rate / 12/ 100;
+                var n = months_remaining;
+                var r1 = (1 + r)**n;
+                return p * ((r * r1)/(r1 -1));
+            }
 
-            pmnt = {
-                'month': month, 'balance': as_currency(balance),
-                'payment': as_currency(payment),
-                'principal': as_currency(principal),
-                'interest': as_currency(interest),
-                'extra': as_currency(extra),
-                'total_extra': as_currency(total_extra),
-                'total_interest': as_currency(total_interest),
-                'total_paid': as_currency(total_paid),
-                };
-            yield pmnt;
-        }
-    }
+            function* amortization(balance, rate, years, months, extra){
+                years = typeof(years) != 'undefined' ? years : 30;
+                extra = typeof(extra) != 'undefined' ? extra : 0.0;
+                if(typeof(months) == 'undefined' || months == null) {
+                    months = years * 12;
+                }
 
-    function make_row(pmnt){
-        var tr = document.createElement("tr");
-        if(typeof(pmnt) === 'undefined'){
-            pmnt = {
-                'month': 'Month', 'balance': 'Balance',
-                'payment': 'Payment',
-                'principal': 'Principal',
-                'interest': 'Interest',
-                'extra': 'Extra',
-                'total_extra': 'Total Extra',
-                'total_interest': 'Total Interest',
-                'total_paid': 'Total Paid',
-            };
-        }
+                var r = rate / 100 / 12;
+                var total_extra = 0;
+                var total_interest = 0;
+                var total_paid = 0;
+                var month = 0;
+                var interest, principal, payment, pmnt;
 
-        tr.innerHTML = `
-        <th>${pmnt.month}</th>\
-        <th>${pmnt.payment}</th>\
-        <th>${pmnt.principal}</th>\
-        <th>${pmnt.interest}</th>\
-        <th>${pmnt.extra}</th>\
-        <th>${pmnt.balance}</th>`;
-        return tr;
-    }
+                var monthly = calculate_payment(balance, rate, months);
 
-    function calculate(){
-        var it, pmnt, balance, rate, years, extra;
+                while (balance > 0) {
+                    interest = balance * r;
+                    principal = monthly - interest;
+                    balance = balance - (principal + extra);
+                    payment = monthly + extra;
 
-        balance = parseFloat(balance_el.value.replace(/[$, ]+/g, "").trim());
-        rate = parseFloat(rate_el.value.replace(/[% ]+/g, "").trim());
-        years = parseInt(years_el.value.replace(/[ ]+/g, "").trim());
-        extra = parseFloat(extra_el.value.replace(/[$, ]+/g, "").trim());
+                    if (round2(balance, 2) <= 0){
+                        balance = round2(balance, 2);
 
-        // Clear the table and set the header
-        table_el.innerHTML = make_row().outerHTML;
+                        // Remove negative from extra first
+                        payment += balance; // Balance is negative
+                        extra += balance;
+                        if (extra < 0){
+                            principal += extra;
+                            extra = 0;
+                        }
 
-        const iter = amortization(balance, rate, years, null, extra);
-        it = iter.next();
+                        balance = 0;
+                    }
 
-        while(!it.done){
-            pmnt = it.value;
-            table_el.appendChild(make_row(pmnt));
-            it = iter.next();
-        }
+                    total_extra += extra;
+                    total_interest += interest;
+                    total_paid += payment;
+                    month += 1;
+
+                    pmnt = {
+                        'month': month, 'balance': as_currency(balance),
+                        'payment': as_currency(payment),
+                        'principal': as_currency(principal),
+                        'interest': as_currency(interest),
+                        'extra': as_currency(extra),
+                        'total_extra': as_currency(total_extra),
+                        'total_interest': as_currency(total_interest),
+                        'total_paid': as_currency(total_paid),
+                        };
+                    yield pmnt;
+                }
+            }
+
+            function make_row(pmnt){
+                var tr = document.createElement("tr");
+                if(typeof(pmnt) === 'undefined'){
+                    pmnt = {
+                        'month': 'Month', 'balance': 'Balance',
+                        'payment': 'Payment',
+                        'principal': 'Principal',
+                        'interest': 'Interest',
+                        'extra': 'Extra',
+                        'total_extra': 'Total Extra',
+                        'total_interest': 'Total Interest',
+                        'total_paid': 'Total Paid',
+                    };
+                }
+
+                tr.innerHTML = `
+                <th>${pmnt.month}</th>\
+                <th>${pmnt.payment}</th>\
+                <th>${pmnt.principal}</th>\
+                <th>${pmnt.interest}</th>\
+                <th>${pmnt.extra}</th>\
+                <th>${pmnt.balance}</th>`;
+                return tr;
+            }
+
+            function calculate(){
+                var it, pmnt, balance, rate, years, extra;
+
+                balance = parseFloat(balance_el.value.replace(/[$, ]+/g, "").trim());
+                rate = parseFloat(rate_el.value.replace(/[% ]+/g, "").trim());
+                years = parseInt(years_el.value.replace(/[ ]+/g, "").trim());
+                extra = parseFloat(extra_el.value.replace(/[$, ]+/g, "").trim());
+
+                // Clear the table and set the header
+                table_el.innerHTML = make_row().outerHTML;
+
+                const iter = amortization(balance, rate, years, null, extra);
+                it = iter.next();
+
+                while(!it.done){
+                    pmnt = it.value;
+                    table_el.appendChild(make_row(pmnt));
+                    it = iter.next();
+                }
 
 
-        metrics_el.innerHTML = `\
-        <b>Years: </b>${(pmnt.month / 12).toFixed(1)} <br>\
-        <b>Total Extra: </b>${pmnt.total_extra} <br>\
-        <b>Total Interest: </b>${pmnt.total_interest} <br>\
-        <b>Total Paid: </b>${pmnt.total_paid} <br>\
-        `
-    }
+                metrics_el.innerHTML = `\
+                <b>Years: </b>${(pmnt.month / 12).toFixed(1)} <br>\
+                <b>Total Extra: </b>${pmnt.total_extra} <br>\
+                <b>Total Interest: </b>${pmnt.total_interest} <br>\
+                <b>Total Paid: </b>${pmnt.total_paid} <br>\
+                `
+            }
 
-    // Clear the table and set the header
-    table_el.innerHTML = make_row().outerHTML;
-</script>
+            // Clear the table and set the header
+            table_el.innerHTML = make_row().outerHTML;
+        </script>
+    </div>
+</div>
 {% endblock contents %}

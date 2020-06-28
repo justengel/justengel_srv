@@ -2,63 +2,67 @@
 
 
 {% block contents %}
-<h1>Mortgage Calculator</h1>
-<p>This mortgage calculator posts the inputs to Python where Python runs the calculations and returns the results.</p>
+<div class="row">
+    <div class="col s12">
+        <h1>Mortgage Calculator</h1>
+        <p>This mortgage calculator posts the inputs to Python where Python runs the calculations and returns the results.</p>
 
-<h2>References</h2>
-<ul>
-    <li><a href="https://www.wikihow.com/Calculate-Mortgage-Payments">wikiHow</a></li>
-</ul>
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://www.wikihow.com/Calculate-Mortgage-Payments">wikiHow</a></li>
+        </ul>
 
-<h2>Calculator:</h2>
+        <h2>Calculator:</h2>
 
-<form method="GET">
-    <label for="balance">Balance:</label><br>
-    <input type="text" id="balance" name="balance" value="{{ balance }}"><br>
+        <form method="GET">
+            <label for="balance">Balance:</label><br>
+            <input type="text" id="balance" name="balance" value="{{ balance }}"><br>
 
-    <label for="rate">Interest Rate (%):</label><br>
-    <input type="number" id="rate" name="rate" value="{{ rate }}"><br>
+            <label for="rate">Interest Rate (%):</label><br>
+            <input type="number" id="rate" name="rate" value="{{ rate }}"><br>
 
-    <label for="years">Years:</label><br>
-    <input type="number" id="years" name="years" value="{{ years }}"><br><br>
+            <label for="years">Years:</label><br>
+            <input type="number" id="years" name="years" value="{{ years }}"><br><br>
 
-    <label for="extra">Extra Monthly:</label><br>
-    <input type="text" id="extra" name="extra" value="{{ extra }}"><br><br>
+            <label for="extra">Extra Monthly:</label><br>
+            <input type="text" id="extra" name="extra" value="{{ extra }}"><br><br>
 
-    <button class="btn">Calculate</button><br>
-</form>
+            <button class="btn">Calculate</button><br>
+        </form>
 
-<br>
+        <br>
 
-<div id="metrics">
-{% with last = payments|last %}
-    <b>Years: </b>{{ "%.1f"|format(last.month / 12) }} <b style="margin-left: 20px">Total Months: </b>{{ last.month }}<br>
-    <b>Total Extra: </b>{{ last.total_extra }} <br>
-    <b>Total Interest: </b>{{ last.total_interest }} <br>
-    <b>Total Paid: </b>{{ last.total_paid }} <br>
-{% endwith %}
+        <div id="metrics">
+        {% with last = payments|last %}
+            <b>Years: </b>{{ "%.1f"|format(last.month / 12) }} <b style="margin-left: 20px">Total Months: </b>{{ last.month }}<br>
+            <b>Total Extra: </b>{{ last.total_extra }} <br>
+            <b>Total Interest: </b>{{ last.total_interest }} <br>
+            <b>Total Paid: </b>{{ last.total_paid }} <br>
+        {% endwith %}
+        </div>
+
+
+        <br>
+        <table id="table">
+            <tr>
+                <th>Month</th>
+                <th>Payment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Extra</th>
+                <th>Balance</th>
+            </tr>
+        {% for p in payments %}
+            <tr>
+                <th>{{ p.month }}</th>
+                <th>{{ p.payment }}</th>
+                <th>{{ p.principal }}</th>
+                <th>{{ p.interest }}</th>
+                <th>{{ p.extra }}</th>
+                <th>{{ p.balance }}</th>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
 </div>
-
-
-<br>
-<table id="table">
-    <tr>
-        <th>Month</th>
-        <th>Payment</th>
-        <th>Principal</th>
-        <th>Interest</th>
-        <th>Extra</th>
-        <th>Balance</th>
-    </tr>
-{% for p in payments %}
-    <tr>
-        <th>{{ p.month }}</th>
-        <th>{{ p.payment }}</th>
-        <th>{{ p.principal }}</th>
-        <th>{{ p.interest }}</th>
-        <th>{{ p.extra }}</th>
-        <th>{{ p.balance }}</th>
-    </tr>
-{% endfor %}
-</table>
 {% endblock contents %}

@@ -1,111 +1,115 @@
 {% extends 'base'|with_theme %}
 
 {% block contents %}
-<h1>Time Calculator</h1>
-<p>Calculate how many hours you worked in a week. Don't forget to take lunch breaks out of your time.</p>
+<div class="row">
+    <div class="col s12">
+        <h1>Time Calculator</h1>
+        <p>Calculate how many hours you worked in a week. Don't forget to take lunch breaks out of your time.</p>
 
-{% if hours_worked %}
-<p><b>Hours Worked: </b> {{ "%.2f"|format(hours_worked) }}</p>
-<p><b>Paycheck: </b> {{ "$%.2f"|format(paycheck) }}</p><br>
-<b>Calculated Time:</b>
-<ul>
-{% for i in range(num_inputs) %}
-    <li>{{ input_times[i][0][0] }} {{ input_times[i][0][1] }} - {{ input_times[i][1][0] }} {{ input_times[i][1][1] }} ==
-        {{ "%.2f"|format(time_totals[i]) }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-
-<form id="time_form" method="POST">
-    <label for="pay">Hourly Pay: $
-    <input type="number" id="pay" name="pay" value="{{ pay }}"><br><br>
-    </label>
-
-    <button type="button" class="btn" id="add_time" onclick="add_row()">+</button>
-    <button type="button" class="btn" id="remove_time" onclick="remove_row()">-</button><br><br>
-
-    <input type="submit" class="btn" value="Calculate">
-</form>
-
-
-<script>
-    var next_idx = 0;
-    var time_form = document.getElementById("time_form");
-    var add_time = document.getElementById("add_time");
-    var start_lbl, start_date, start_time, end_lbl, end_date, end_time, br_time;
-    var today = "{{ today }}";
-
-    function add_row(startdate, starttime, enddate, endtime){
-        startdate = typeof(startdate) != 'undefined' ? startdate : today;
-        starttime = typeof(starttime) != 'undefined' ? starttime : '08:00 AM';
-        enddate = typeof(enddate) != 'undefined' ? enddate : today;
-        endtime = typeof(endtime) != 'undefined' ? endtime : '05:00 PM';
-
-        start_lbl = document.createElement("label");
-        start_lbl.htmlFor = "start_"+next_idx.toString();
-        start_lbl.id = "start_lbl_" +next_idx.toString();
-        start_lbl.style = "display: inline-block";
-        start_lbl.innerHTML = `
-        <span>Start ${next_idx}: </span>
-        <input type="text" class="datepicker" id="start_date${next_idx}" name="start_date${next_idx}" value="${startdate}">
-        <input type="text" class="timepicker" id="start_time${next_idx}" name="start_time${next_idx}" value="${starttime}">`;
-
-        end_lbl = document.createElement("label");
-        end_lbl.htmlFor = "end_"+next_idx.toString();
-        end_lbl.id = "end_lbl_" +next_idx.toString();
-        end_lbl.style = "display: inline-block";
-        end_lbl.innerHTML = `
-        <span>End ${next_idx}: </span>
-        <input type="text" class="datepicker" id="end_date${next_idx}" name="end_date${next_idx}" value="${enddate}">
-        <input type="text" class="timepicker" id="end_time${next_idx}" name="end_time${next_idx}" value="${endtime}">`;
-
-        br_time = document.createElement('br');
-        br_time.id = 'br_time_' + next_idx.toString();
-
-        time_form.insertBefore(start_lbl, add_time);
-        time_form.insertBefore(end_lbl, add_time);
-        time_form.insertBefore(br_time, add_time);
-
-        var dates = M.Datepicker.init($(`#start_date${next_idx}, #end_date${next_idx}`), {'format': 'mmm dd, yyyy'});
-        M.Timepicker.init($(`#start_time${next_idx}, #end_time${next_idx}`));
-        dates[0].setDate(startdate);
-        dates[1].setDate(enddate);
-
-        next_idx += 1;
-    }
-
-    function remove_row(){
-        if (next_idx <= 1){
-            return;
-        }
-
-        next_idx -= 1;
-        start_lbl = document.getElementById("start_lbl_"+next_idx.toString());
-        end_lbl = document.getElementById("end_lbl_" + next_idx.toString());
-        br_time = document.getElementById('br_time_' + next_idx.toString());
-
-        time_form.removeChild(start_lbl);
-        time_form.removeChild(end_lbl);
-        time_form.removeChild(br_time);
-    }
-
-    function update_time(idx, start, end){
-        start_time = document.getElementById("start_" + idx.toString());
-        end_time = document.getElementById('end_' + idx.toString());
-        start_time.value = start;
-        end_time.value = end;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-    {% if num_inputs == 0 %}
-        // Add the initial row
-        add_row();
-    {% else %}
-        // Populate given fields
-        {% for item in input_times %}
-        add_row("{{ item[0][0] }}", "{{ item[0][1] }}", "{{ item[1][0] }}", "{{ item[1][1] }}");
+        {% if hours_worked %}
+        <p><b>Hours Worked: </b> {{ "%.2f"|format(hours_worked) }}</p>
+        <p><b>Paycheck: </b> {{ "$%.2f"|format(paycheck) }}</p><br>
+        <b>Calculated Time:</b>
+        <ul>
+        {% for i in range(num_inputs) %}
+            <li>{{ input_times[i][0][0] }} {{ input_times[i][0][1] }} - {{ input_times[i][1][0] }} {{ input_times[i][1][1] }} ==
+                {{ "%.2f"|format(time_totals[i]) }}</li>
         {% endfor %}
-    {% endif %}
-    });
-</script>
+        </ul>
+        {% endif %}
+
+        <form id="time_form" method="POST">
+            <label for="pay">Hourly Pay: $
+            <input type="number" id="pay" name="pay" value="{{ pay }}"><br><br>
+            </label>
+
+            <button type="button" class="btn" id="add_time" onclick="add_row()">+</button>
+            <button type="button" class="btn" id="remove_time" onclick="remove_row()">-</button><br><br>
+
+            <input type="submit" class="btn" value="Calculate">
+        </form>
+
+
+        <script>
+            var next_idx = 0;
+            var time_form = document.getElementById("time_form");
+            var add_time = document.getElementById("add_time");
+            var start_lbl, start_date, start_time, end_lbl, end_date, end_time, br_time;
+            var today = "{{ today }}";
+
+            function add_row(startdate, starttime, enddate, endtime){
+                startdate = typeof(startdate) != 'undefined' ? startdate : today;
+                starttime = typeof(starttime) != 'undefined' ? starttime : '08:00 AM';
+                enddate = typeof(enddate) != 'undefined' ? enddate : today;
+                endtime = typeof(endtime) != 'undefined' ? endtime : '05:00 PM';
+
+                start_lbl = document.createElement("label");
+                start_lbl.htmlFor = "start_"+next_idx.toString();
+                start_lbl.id = "start_lbl_" +next_idx.toString();
+                start_lbl.style = "display: inline-block";
+                start_lbl.innerHTML = `
+                <span>Start ${next_idx}: </span>
+                <input type="text" class="datepicker" id="start_date${next_idx}" name="start_date${next_idx}" value="${startdate}">
+                <input type="text" class="timepicker" id="start_time${next_idx}" name="start_time${next_idx}" value="${starttime}">`;
+
+                end_lbl = document.createElement("label");
+                end_lbl.htmlFor = "end_"+next_idx.toString();
+                end_lbl.id = "end_lbl_" +next_idx.toString();
+                end_lbl.style = "display: inline-block";
+                end_lbl.innerHTML = `
+                <span>End ${next_idx}: </span>
+                <input type="text" class="datepicker" id="end_date${next_idx}" name="end_date${next_idx}" value="${enddate}">
+                <input type="text" class="timepicker" id="end_time${next_idx}" name="end_time${next_idx}" value="${endtime}">`;
+
+                br_time = document.createElement('br');
+                br_time.id = 'br_time_' + next_idx.toString();
+
+                time_form.insertBefore(start_lbl, add_time);
+                time_form.insertBefore(end_lbl, add_time);
+                time_form.insertBefore(br_time, add_time);
+
+                var dates = M.Datepicker.init($(`#start_date${next_idx}, #end_date${next_idx}`), {'format': 'mmm dd, yyyy'});
+                M.Timepicker.init($(`#start_time${next_idx}, #end_time${next_idx}`));
+                dates[0].setDate(startdate);
+                dates[1].setDate(enddate);
+
+                next_idx += 1;
+            }
+
+            function remove_row(){
+                if (next_idx <= 1){
+                    return;
+                }
+
+                next_idx -= 1;
+                start_lbl = document.getElementById("start_lbl_"+next_idx.toString());
+                end_lbl = document.getElementById("end_lbl_" + next_idx.toString());
+                br_time = document.getElementById('br_time_' + next_idx.toString());
+
+                time_form.removeChild(start_lbl);
+                time_form.removeChild(end_lbl);
+                time_form.removeChild(br_time);
+            }
+
+            function update_time(idx, start, end){
+                start_time = document.getElementById("start_" + idx.toString());
+                end_time = document.getElementById('end_' + idx.toString());
+                start_time.value = start;
+                end_time.value = end;
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+            {% if num_inputs == 0 %}
+                // Add the initial row
+                add_row();
+            {% else %}
+                // Populate given fields
+                {% for item in input_times %}
+                add_row("{{ item[0][0] }}", "{{ item[0][1] }}", "{{ item[1][0] }}", "{{ item[1][1] }}");
+                {% endfor %}
+            {% endif %}
+            });
+        </script>
+    </div>
+</div>
 {% endblock contents %}
