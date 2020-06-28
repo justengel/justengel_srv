@@ -1,5 +1,5 @@
 name = 'justengel_srv'
-version = '0.0.2'
+version = '0.0.3'
 description = 'justengel.com server'
 url = 'https://github.com/justengel-web/justengel_srv'
 author = 'Justin Engel'
