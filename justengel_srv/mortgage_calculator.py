@@ -28,6 +28,9 @@ class Currency(float):
     def validate(cls, v):
         return cls(v)
 
+    def as_float(self):
+        return f'{self:.2f}'
+
     def __str__(self):
         return f'${self:,.2f}'  # '${:,.2f}'.format(float(self))
 
