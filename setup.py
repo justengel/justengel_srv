@@ -84,7 +84,7 @@ if __name__ == "__main__":
               'jinja2>=2.11.2',
               'aiofiles>=0.5.0',
               'httpx>=0.13.3',
-              'justengel_material>=1.0.0',
+              'justengel_material>=1.0.1',
               ],
           extras_require={
               },
