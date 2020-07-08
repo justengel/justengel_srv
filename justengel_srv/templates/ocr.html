@@ -1,0 +1,24 @@
+{% extends 'base'|with_theme %}
+
+{% block contents %}
+<div class="row">
+    <div class="col s12">
+        <h1>OCR</h1>
+        <p>OCR is known as Optical Character Recognition. It converts an image to text.
+
+        </p>
+        <p>
+            This utility works by posting an image to the server where the server converts the image to a text file and
+            returns the file to the user.
+        </p>
+
+        <form id="ocr_form" method="POST" enctype="multipart/form-data">
+            <label for="file">Image to Text:<br>
+                <input type="file" id="file" name="file" accept="image/png, image/jpeg"><br><br>
+            </label>
+
+            <input type="submit" class="btn" value="Submit">
+        </form>
+    </div>
+</div>
+{% endblock contents %}
