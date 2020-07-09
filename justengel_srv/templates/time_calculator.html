@@ -4,16 +4,20 @@
 <div class="row">
     <div class="col s12">
         <h1>Time Calculator</h1>
-        <p>Calculate how many hours you worked in a week. Don't forget to take lunch breaks out of your time.</p>
+        <p>Calculate how many hours you worked in a week.</p>
 
         {% if hours_worked %}
         <p><b>Hours Worked: </b> {{ "%.2f"|format(hours_worked) }}</p>
-        <p><b>Paycheck: </b> {{ "$%.2f"|format(paycheck) }}</p><br>
+        <p><b>Pay for ${{ pay }}/hour: </b> {{ "$%.2f"|format(paycheck) }}</p><br>
         <b>Calculated Time:</b>
         <ul>
         {% for i in range(num_inputs) %}
-            <li>{{ input_times[i][0][0] }} {{ input_times[i][0][1] }} - {{ input_times[i][1][0] }} {{ input_times[i][1][1] }} ==
-                {{ "%.2f"|format(time_totals[i]) }}</li>
+            {% with hours = time_totals[i], this_time = input_times[i] %}
+            <li>{{ this_time[0][0] }} {{ this_time[0][1] }} - {{ this_time[1][0] }} {{ this_time[1][1] }} =>
+                {{ "%d"|format(hours) }} hours {{ "%d"|format((hours - hours|int ) * 60) }} minutes =>
+                {{ "%.2f"|format(hours) }} hours
+            </li>
+            {% endwith %}
         {% endfor %}
         </ul>
         {% endif %}
@@ -23,6 +27,7 @@
             <input type="number" id="pay" name="pay" value="{{ pay }}"><br><br>
             </label>
 
+            <p>Don't forget to take lunch breaks out of your time.</p>
             <button type="button" class="btn" id="add_time" onclick="add_row()">+</button>
             <button type="button" class="btn" id="remove_time" onclick="remove_row()">-</button><br><br>
 
