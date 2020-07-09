@@ -7,7 +7,10 @@
         <p>Calculate how many hours you worked in a week.</p>
 
         {% if hours_worked %}
-        <p><b>Hours Worked: </b> {{ "%.2f"|format(hours_worked) }}</p>
+        <p><b>Hours Worked: </b>
+            {{ "%d"|format(hours_worked) }} hours {{ "%d"|format((hours_worked - hours_worked|int ) * 60) }} minutes =>
+            {{ "%.2f"|format(hours_worked) }} hours
+        </p>
         <p><b>Pay for ${{ pay }}/hour: </b> {{ "$%.2f"|format(paycheck) }}</p><br>
         <b>Calculated Time:</b>
         <ul>
