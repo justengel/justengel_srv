@@ -4,7 +4,7 @@ import os
 import datetime
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.templating import Jinja2Templates
-from justengel_srv import utils
+from justengel_srv.utils import get_theme, template
 
 
 __all__ = ['Currency', 'Payment', 'calculate_payment', 'amortization',
@@ -106,12 +106,7 @@ def amortization(balance: Currency, rate: float, years: float = 30, months: int 
 
 
 # ===== Web App =====
-app = FastAPI()
 router = APIRouter()
-theme = utils.get_theme()
-theme.install_app(app, serve_static=True,
-                  site_name='JustEngel', show_sidenav=True,
-                  primary_color='teal', secondary_color='purple')
 
 
 @router.get('/')
@@ -127,7 +122,7 @@ async def mortgage_calculator(request: Request, balance: Currency = 300_000, rat
     payments = list(amortization(balance, rate, years=years, months=months, extra=extra))
     ctx['payments'] = payments
 
-    return theme.TemplateResponse('mortgage_calculator.html', ctx)
+    return template('mortgage_calculator.html', ctx)
 
 
 @router.get('/raw')
@@ -135,16 +130,20 @@ async def raw(request: Request):
     ctx = {'request': request, 'base_url': request.base_url,
            'title': 'Raw Mortgage Calculator',
            }
-    return theme.TemplateResponse('raw_mortgage_calculator.html', ctx)
+    return template('raw_mortgage_calculator.html', ctx)
 
 
+# Create the app
+app = FastAPI()
 app.include_router(router)
+get_theme().install_app(app, serve_static=True,
+                        site_name='JustEngel', show_sidenav=True,
+                        primary_color='teal', secondary_color='purple')
 
 
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run(app)
-
 
     # print('{:^5} | {:^13} | {:^13} | {:^13} | {:^13} | {:^13}'.format(
     #         'Month', 'Payment', 'Principal', 'Interest', 'Extra', 'Balance'))

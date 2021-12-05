@@ -3,17 +3,13 @@ import datetime
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.templating import Jinja2Templates
 
-from justengel_srv import utils
-
-__all__ = ['app', 'router']
+from justengel_srv.utils import get_theme, template
 
 
-app = FastAPI()
+__all__ = ['router']
+
+
 router = APIRouter()
-theme = utils.get_theme()
-theme.install_app(app, serve_static=True,
-                  site_name='JustEngel', show_sidenav=True,
-                  primary_color='teal', secondary_color='purple')
 
 
 @router.route('/', methods=['GET', 'POST'])
@@ -26,7 +22,7 @@ async def time_calculator(request: Request):
            }
 
     if request.method == 'GET':
-        return theme.TemplateResponse('time_calculator.html', ctx)
+        return template('time_calculator.html', ctx)
 
     # Method is POST
     form = await request.form()
@@ -57,10 +53,15 @@ async def time_calculator(request: Request):
     ctx['time_totals'] = time_totals
     ctx['input_times'] = input_times
     ctx['num_inputs'] = len(input_times)
-    return theme.TemplateResponse('time_calculator.html', ctx)
+    return template('time_calculator.html', ctx)
 
 
+# Create the app
+app = FastAPI()
 app.include_router(router)
+get_theme().install_app(app, serve_static=True,
+                        site_name='JustEngel', show_sidenav=True,
+                        primary_color='teal', secondary_color='purple')
 
 
 if __name__ == '__main__':

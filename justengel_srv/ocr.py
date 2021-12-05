@@ -4,19 +4,13 @@ from fastapi import FastAPI, APIRouter, Request
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 
-from justengel_srv import utils
-
-__all__ = ['app', 'router']
+from justengel_srv.utils import get_theme, template
 
 
-app = FastAPI()
+__all__ = ['router']
+
+
 router = APIRouter()
-theme = utils.get_theme()
-theme.install_app(app, serve_static=True,
-                  site_name='JustEngel', show_sidenav=True,
-                  primary_color='teal', secondary_color='purple')
-
-
 ocr = easyocr.Reader(['en'])
 
 
@@ -32,10 +26,15 @@ async def get_ocr(request: Request):
         res = ocr.readtext(await file.read())
         probable_text = '\n'.join((item[1] for item in res))
         return StreamingResponse(io.BytesIO(probable_text.encode()), media_type="text/plain")
-    return theme.TemplateResponse('ocr.html', ctx)
+    return template('ocr.html', ctx)
 
 
+# Create the app
+app = FastAPI()
 app.include_router(router)
+get_theme().install_app(app, serve_static=True,
+                        site_name='JustEngel', show_sidenav=True,
+                        primary_color='teal', secondary_color='purple')
 
 
 if __name__ == '__main__':
