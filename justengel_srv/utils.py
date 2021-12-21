@@ -36,7 +36,10 @@ def template(name: str, context: dict, status_code: int = 200, headers: dict = N
 
 def add_message(request: Request, msg_type: str, msg: str):
     """Add a message to a session."""
-    session = getattr(request, 'session', None)
+    try:
+        session = getattr(request, 'session', None)
+    except (AssertionError, Exception):
+        session = None
     if session:
         notify = f'{msg_type},{msg}'
         try:
@@ -49,7 +52,10 @@ def get_messages(request: Request) -> List[Message]:
     """Return a list of messages from the session."""
     messages = []
 
-    session = getattr(request, 'session', None)
+    try:
+        session = getattr(request, 'session', None)
+    except (AssertionError, Exception):
+        session = None
     if session:
         try:
             for v in session['messages'].split(';'):
