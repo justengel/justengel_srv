@@ -1,0 +1,9 @@
+{% if SHOW_SIDENAV %}
+<ul id="nav-sidenav" class="grey lighten-2 sidenav{% if FIXED_SIDENAV %} sidenav-fixed{% endif %}">
+    <li class="user_sidenav center"><a class="teal-text" href="/resume"><img class="circle user_sidenav" src="{{ '/justengel_static/profile.jpg'|static }}"></a></li>
+    <li><h4 class="center"><a class="teal-text" href="/resume">Justin Engel</a></h4></li>
+    <li><div class="divider"></div></li>
+
+    {% include_block 'sidenav_items'|with_theme %}
+</ul>
+{% endif %}
