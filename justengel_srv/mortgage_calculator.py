@@ -37,6 +37,9 @@ class Currency(float):
     def __repr__(self):
         return f'${self:,.2f}'
 
+    def __eq__(self, other):
+        return round(self, 2) == round(other, 2)
+
 
 class Payment(BaseModel):
     month: int
