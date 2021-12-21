@@ -3,7 +3,7 @@
 {% block contents %}
 <div class="row">
     <div class="col s12">
-        <h1>Time Calculator</h1>
+        <h2>Time Calculator</h2>
         <p>Calculate how many hours you worked in a week.</p>
 
         {% if hours_worked %}
@@ -76,7 +76,16 @@
                 time_form.insertBefore(end_lbl, add_time);
                 time_form.insertBefore(br_time, add_time);
 
-                var dates = M.Datepicker.init($(`#start_date${next_idx}, #end_date${next_idx}`), {'format': 'mmm dd, yyyy'});
+                function update_end_date(){
+                  console.log(this.el.id.includes('start'));
+                  if(this.el.id.includes('start')){
+                    let end_date = document.getElementById(this.el.id.replace('start', 'end'));
+                    end_date.value = this.el.value;
+                  }
+                }
+
+                var dates = M.Datepicker.init($(`#start_date${next_idx}, #end_date${next_idx}`),
+                    {'format': 'mmm dd, yyyy', 'onClose': update_end_date});
                 M.Timepicker.init($(`#start_time${next_idx}, #end_time${next_idx}`));
                 dates[0].setDate(startdate);
                 dates[1].setDate(enddate);
