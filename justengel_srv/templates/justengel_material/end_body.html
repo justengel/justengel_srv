@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    // Auto Init materialize javascript components
+    M.AutoInit();
+
+    // Turn off the container for small screens
+    if(is_small()){
+        turn_off_container();
+    }
+
+    // check_pickers();
+    // check_card_reveal();
+    // check_table_of_contents();
+</script>
+
+
+<script src="{{ '/justengel_static/prism/prism.js'|static }}"></script>
+
+<script>
+(function () {
+
+  if (typeof Prism === 'undefined' || typeof document === 'undefined' || !document.querySelector) {
+    return;
+  }
+
+  Prism.plugins.toolbar.registerButton('download-file', function (env) {
+    var pre = env.element.parentNode;
+    if (!pre || !/pre/i.test(pre.nodeName) || !pre.hasAttribute('data-src') || !pre.hasAttribute('data-download-link')) {
+        return;
+    }
+    var src = pre.getAttribute('data-src');
+    var a = document.createElement('a');
+    a.textContent = pre.getAttribute('data-download-link-label') || 'Download';
+    a.setAttribute('download', '');
+    a.href = src;
+    return a;
+  });
+
+}());
+</script>
