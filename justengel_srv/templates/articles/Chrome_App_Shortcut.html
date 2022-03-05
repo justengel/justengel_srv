@@ -1,0 +1,120 @@
+{% extends 'base'|with_theme %}
+
+
+{% block contents %}
+<div class="row">
+    <div class="col s12">
+        <h2><a href="/articles">Articles</a></h2>
+        <h3>Ubuntu: Chrome App Shortcut</h3>
+        <p>
+            This guide shows you how to make a desktop shortcut to open Chrome at a specific website.
+            There are many existing guides about this. This guide shows you how to make two shortcuts for the same
+            website. Chrome will let you make a desktop shortcut easy enough. However, if you want one shortcut for
+            Outlook Mail and another shortcut for Outlook Calendar Chrome will not let you do this. This guide will
+            show you how.
+        </p>
+
+        <div>
+            <h4>Simple Shortcut</h4>
+            <p>
+                Navigate to the site you want to make a shortcut for (EX: https://outlook.live.com/mail/0/).
+
+                Click the menu button <b>Menu Button > More Tools > Create Shortcut</b>
+            </p>
+
+            <img src="{{ '/justengel_static/articles/chrome/Chrome_Create_Shortcut.png'|static }}"
+                 style="border: 1px solid black;">
+
+            <p>
+                This will open a dialog.
+            </p>
+
+            <img src="{{ '/justengel_static/articles/chrome/Chrome_Create_Shortcut_Dialog.png'|static }}"
+                 style="border:1px solid black;">
+
+            <p>
+                <b>Note:</b> if you do this for Outlook Mail and Outlook Calendar the Outlook Calendar will overwrite
+                Outlook Mail.
+            </p>
+
+            <h5>App Links</h5>
+            <p>
+                This creates a file at <code>./local/share/applications/chrome_XXXXXXXXXXXXXX.desktop</code>.
+                This file can be renamed to <code>outlook_mail.desktop</code> and can also be edited.
+                This creates a link in Google Chrome that can be located at
+                <a href="chrome://extensions">chrome://extensions</a> or <a href="chrome://apps">chrome://apps</a>
+            </p>
+        </div>
+
+    </div>
+
+    <div>
+        <h4>Manual Chrome Shortcut</h4>
+        <p>
+            Create folder to contain the app manifest and images (EX: <code>/home/myuser/ChromeApps/CalendarApp</code>).
+
+            Save your icons in this folder.
+
+            Create a manifest.json file.
+        </p>
+
+        <pre class="line-numbers" data-src="{{ '/justengel_static/articles/chrome/manifest.json' }}"
+             data-download-link data-download-link-label="Download"></pre>
+
+        <p>
+            Navigate to <a href="chrome://extensions">chrome://extensions</a> and turn on developer mode in the
+            top right corner.
+        </p>
+
+        <img src="{{ '/justengel_static/articles/chrome/developer_mode.png'|static }}">
+
+        <p>
+            In Chrome Extensions, Click <code>Load Unpacked</code> and selected the directory containing the
+            <code>manifest.json</code>
+        </p>
+
+        <img src="{{ '/justengel_static/articles/chrome/load_unpacked.png'|static }}">
+
+        <p>
+            This will create the Chrome app in <a href="chrome://extensions">chrome://extensions</a> and
+            <a href="chrome://apps">chrome://apps</a>
+        </p>
+
+        <div>
+            <h3>Create the Desktop Shortcut</h3>
+
+            <p>
+                Now that the app is created in Chrome go to <a href="chrome://apps/">chrome://apps/</a>, find
+                your application, right click and select <b>Create Shortcuts</b>.
+
+                This will create a file at <code>./local/share/applications/chrome_XXXXXXXXXXXXXX.desktop</code>
+            </p>
+
+            <h3>Manually Create the Desktop Shortcut</h3>
+            <p>
+                You can manually create the desktop shortcut by creating the <code>calendar.desktop</code> file.
+
+                First you need the Chrome ID. Navigate to <a href="chrome://extensions">chrome://extensions</a>.
+                You should see your application with an ID.
+            </p>
+
+            <img src="{{ '/justengel_static/articles/chrome/Calendar_Extension.png'|static }}">
+
+            <p>
+                Create a file at <code>./local/share/applications/calendar.desktop</code>.
+
+                It should look something like.
+            </p>
+
+            <pre class="line-numbers" data-src="{{ '/justengel_static/articles/chrome/calendar.desktop' }}"
+             data-download-link data-download-link-label="Download">
+            </pre>
+
+            <p>
+                You should now have a start menu option and be able to save this application in your taskbar.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock contents %}
+

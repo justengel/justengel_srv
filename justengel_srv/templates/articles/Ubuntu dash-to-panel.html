@@ -1,0 +1,36 @@
+{% extends 'base'|with_theme %}
+
+
+{% block contents %}
+<div class="row">
+    <div class="col s12">
+        <h2><a href="/articles">Articles</a></h2>
+        <h3>Ubuntu: Gnome Shell dash-to-panel</h3>
+        <p>
+            Change the taskbar to display on the top with icons centered.
+        </p>
+        <img src="{{ '/justengel_static/articles/dash-to-panel/dash-to-panel.png'|static }}" width="800">
+
+        <div>
+            <h4>Install Gnome Shell Extension</h4>
+            <pre>
+                <code class="language-sh" data-prismjs-copy="copy">sudo apt-get install gnome-shell-extension</code>
+            </pre>
+
+            <p>
+                The best way to install the extension is through the browser.
+                I used installed the application using apt-get it didn't work that well.
+            </p>
+            <a href="https://extensions.gnome.org/">https://extensions.gnome.org/</a>
+
+            <p>
+                Right click on the taskbar and click <b>Dash To Panel Settings > About > Import from file</b>
+            </p>
+            <pre class="line-numbers" data-src="{{ '/justengel_static/articles/dash-to-panel/dash-to-panel.json' }}"
+                 data-download-link data-download-link-label="Download">
+            </pre>
+
+        </div>
+    </div>
+</div>
+{% endblock contents %}

@@ -56,6 +56,14 @@ async def resume(request: Request):
 
 
 try:
+    from justengel_srv import articles
+    app.include_router(articles.router, prefix='/articles')
+    theme.add_sidenav_item(theme.DEFAULT_CONTEXT, name='Articles', href='/articles/')
+except (ImportError, Exception):
+    print('Cannot run articles!')
+
+
+try:
     from justengel_srv import time_calculator
     app.include_router(time_calculator.router, prefix='/time_calculator')
     theme.add_sidenav_item(theme.DEFAULT_CONTEXT, name='Time Calculator', href='/time_calculator/')

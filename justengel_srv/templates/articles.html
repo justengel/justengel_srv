@@ -1,0 +1,18 @@
+{% extends 'base'|with_theme %}
+
+
+{% block contents %}
+<div class="row">
+    <div class="col s12">
+        <h2><a href="/articles">Articles</a></h2>
+        <p>This is just a list of simple guides or thoughts.</p>
+
+        <ul>
+          {% for name, href in articles.items() %}
+              <li><a href="{{ href }}">{{ name }}</a></li>
+          {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock contents %}
+

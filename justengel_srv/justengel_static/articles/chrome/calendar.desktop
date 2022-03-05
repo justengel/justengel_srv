@@ -1,0 +1,15 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Calendar (PWA)
+MimeType=x-scheme-handler/mailto
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=mkkefcgcnakalbbbodecdaniofofahbk --app-launch-url-for-shortcuts->
+Icon=/home/engel/ChromApps/CalendarApp/calendar.png
+StartupWMClass=crx_mkkefcgcnakalbbbodecdaniofofahbk
+Actions=New-event;
+
+[Desktop Action New-event]
+Name=New event
+Exec=/opt/google/chrome/google-chrome --profile-directory=Default --app-id=mkkefcgcnakalbbbodecdaniofofahbk --app-launch-url-for-shortcuts->

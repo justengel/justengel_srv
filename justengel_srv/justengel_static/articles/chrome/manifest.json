@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "Calendar (PWA)",
+  "description": "Outlook Calendar",
+  "version": "1.0",
+  "icons": {
+    "128": "calendar.png"
+  },
+  "app": {
+    "urls": [
+      "https://outlook.office.com/calendar/view/day"
+    ],
+    "launch": {
+      "web_url": "https://outlook.office.com/calendar/view/day"
+    }
+  },
+  "permissions": [
+    "unlimitedStorage",
+    "notifications"
+  ]
+}
