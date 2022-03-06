@@ -1,0 +1,18 @@
+{% extends 'base'|with_theme %}
+
+
+{% block contents %}
+<div class="row">
+    <div class="col s12">
+        <h2><a href="/apps">Apps</a></h2>
+        <p>Simple applications.</p>
+
+        <ul class="collection">
+          {% for r in routes %}
+              <li class="collection-item"><a href="{{ r.href }}">{{ r.name }}</a></li>
+          {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock contents %}
+

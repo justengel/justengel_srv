@@ -9,7 +9,7 @@ from justengel_srv.utils import get_theme, template
 __all__ = ['router']
 
 
-router = APIRouter()
+router = APIRouter(tags=['time_calculator'])
 
 
 @router.route('/', methods=['GET', 'POST'])
@@ -22,7 +22,7 @@ async def time_calculator(request: Request):
            }
 
     if request.method == 'GET':
-        return template('time_calculator.html', ctx)
+        return template('apps/time_calculator.html', ctx)
 
     # Method is POST
     form = await request.form()
@@ -53,7 +53,7 @@ async def time_calculator(request: Request):
     ctx['time_totals'] = time_totals
     ctx['input_times'] = input_times
     ctx['num_inputs'] = len(input_times)
-    return template('time_calculator.html', ctx)
+    return template('apps/time_calculator.html', ctx)
 
 
 # Create the app

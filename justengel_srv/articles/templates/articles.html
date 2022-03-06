@@ -7,9 +7,9 @@
         <h2><a href="/articles">Articles</a></h2>
         <p>This is just a list of simple guides or thoughts.</p>
 
-        <ul>
-          {% for name, href in articles.items() %}
-              <li><a href="{{ href }}">{{ name }}</a></li>
+        <ul class="collection">
+          {% for article in articles %}
+              <li class="collection-item"><a href="{{ article.href }}">{{ article.name }}</a></li>
           {% endfor %}
         </ul>
     </div>

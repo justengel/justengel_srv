@@ -1,17 +1,23 @@
 import os
+from dataclasses import dataclass
 from typing import Union, Tuple, List
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from starlette.background import BackgroundTask
 
 from justengel_theme import ThemeTemplates
-from justengel_material import MaterialTemplates, Message
+from justengel_material import MaterialTemplates, Message, LinkGroup
 
-__all__ = ['MY_DIR', 'get_theme', 'set_theme', 'template', 'add_message', 'get_messages']
+__all__ = ['MY_DIR', 'has_theme', 'get_theme', 'set_theme', 'template', 'add_message', 'get_messages', 'Route']
 
 
 MY_DIR = os.path.dirname(__file__)
 theme: ThemeTemplates = None
+
+
+def has_theme():
+    global theme
+    return theme is not None
 
 
 def get_theme():
@@ -70,3 +76,36 @@ def get_messages(request: Request) -> List[Message]:
             pass
 
     return messages
+
+
+@dataclass
+class Route:
+    name: str
+    href: str = '/'
+    path: str = '/'
+
+    def add_navbar_group(self, theme, links: list = None, with_default: bool = True, context: dict = None):
+        if context is None:
+            context = theme.DEFAULT_CONTEXT
+
+        theme.add_navbar_group(context, name=self.name, links=links, with_default=with_default)
+
+    def add_navbar_item(self, theme, group: Union[LinkGroup, str] = None, with_default: bool = True,
+                        context: dict = None):
+        if context is None:
+            context = theme.DEFAULT_CONTEXT
+
+        theme.add_navbar_item(context, name=self.name, href=self.href, group=group, with_default=with_default)
+
+    def add_sidenav_group(self, theme, links: list = None, with_default: bool = True, context: dict = None):
+        if context is None:
+            context = theme.DEFAULT_CONTEXT
+
+        theme.add_sidenav_group(context, name=self.name, links=links, with_default=with_default)
+
+    def add_sidenav_item(self, theme, group: Union[LinkGroup, str] = None, with_default: bool = True,
+                         context: dict = None):
+        if context is None:
+            context = theme.DEFAULT_CONTEXT
+
+        theme.add_sidenav_item(context, name=self.name, href=self.href, group=group, with_default=with_default)

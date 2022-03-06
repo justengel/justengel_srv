@@ -8,10 +8,10 @@
         <h3>Ubuntu: Chrome App Shortcut</h3>
         <p>
             This guide shows you how to make a desktop shortcut to open Chrome at a specific website.
-            There are many existing guides about this. This guide shows you how to make two shortcuts for the same
-            website. Chrome will let you make a desktop shortcut easy enough. However, if you want one shortcut for
-            Outlook Mail and another shortcut for Outlook Calendar Chrome will not let you do this. This guide will
-            show you how.
+            There are many existing guides for how to do this. This guide shows you how to make two shortcuts for
+            the same website. Chrome will let you make a desktop shortcut easy enough. However, if you want one
+            shortcut for Outlook Mail and another shortcut for Outlook Calendar Chrome will not let you do this.
+            This guide will show you how.
         </p>
 
         <div>
@@ -22,14 +22,14 @@
                 Click the menu button <b>Menu Button > More Tools > Create Shortcut</b>
             </p>
 
-            <img src="{{ '/justengel_static/articles/chrome/Chrome_Create_Shortcut.png'|static }}"
+            <img src="{{ '/static_articles/chrome/Chrome_Create_Shortcut.png'|static }}"
                  style="border: 1px solid black;">
 
             <p>
                 This will open a dialog.
             </p>
 
-            <img src="{{ '/justengel_static/articles/chrome/Chrome_Create_Shortcut_Dialog.png'|static }}"
+            <img src="{{ '/static_articles/chrome/Chrome_Create_Shortcut_Dialog.png'|static }}"
                  style="border:1px solid black;">
 
             <p>
@@ -58,7 +58,7 @@
             Create a manifest.json file.
         </p>
 
-        <pre class="line-numbers" data-src="{{ '/justengel_static/articles/chrome/manifest.json' }}"
+        <pre class="line-numbers" data-src="{{ '/static_articles/chrome/manifest.json' }}"
              data-download-link data-download-link-label="Download"></pre>
 
         <p>
@@ -66,14 +66,14 @@
             top right corner.
         </p>
 
-        <img src="{{ '/justengel_static/articles/chrome/developer_mode.png'|static }}">
+        <img src="{{ '/static_articles/chrome/developer_mode.png'|static }}">
 
         <p>
             In Chrome Extensions, Click <code>Load Unpacked</code> and selected the directory containing the
             <code>manifest.json</code>
         </p>
 
-        <img src="{{ '/justengel_static/articles/chrome/load_unpacked.png'|static }}">
+        <img src="{{ '/static_articles/chrome/load_unpacked.png'|static }}">
 
         <p>
             This will create the Chrome app in <a href="chrome://extensions">chrome://extensions</a> and
@@ -98,7 +98,7 @@
                 You should see your application with an ID.
             </p>
 
-            <img src="{{ '/justengel_static/articles/chrome/Calendar_Extension.png'|static }}">
+            <img src="{{ '/static_articles/chrome/Calendar_Extension.png'|static }}">
 
             <p>
                 Create a file at <code>./local/share/applications/calendar.desktop</code>.
@@ -106,7 +106,7 @@
                 It should look something like.
             </p>
 
-            <pre class="line-numbers" data-src="{{ '/justengel_static/articles/chrome/calendar.desktop' }}"
+            <pre class="line-numbers" data-src="{{ '/static_articles/chrome/calendar.desktop' }}"
              data-download-link data-download-link-label="Download">
             </pre>
 

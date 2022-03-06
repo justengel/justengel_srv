@@ -109,7 +109,7 @@ def amortization(balance: Currency, rate: float, years: float = 30, months: int 
 
 
 # ===== Web App =====
-router = APIRouter()
+router = APIRouter(tags=['mortgage_calculator'])
 
 
 @router.get('/')
@@ -125,15 +125,15 @@ async def mortgage_calculator(request: Request, balance: Currency = 300_000, rat
     payments = list(amortization(balance, rate, years=years, months=months, extra=extra))
     ctx['payments'] = payments
 
-    return template('mortgage_calculator.html', ctx)
+    return template('apps/mortgage_calculator.html', ctx)
 
 
-@router.get('/raw')
-async def raw(request: Request):
+@router.get('/js')
+async def js_mortgage_calculator(request: Request):
     ctx = {'request': request, 'base_url': request.base_url,
-           'title': 'Raw Mortgage Calculator',
+           'title': 'JS Mortgage Calculator',
            }
-    return template('raw_mortgage_calculator.html', ctx)
+    return template('apps/js_mortgage_calculator.html', ctx)
 
 
 # Create the app

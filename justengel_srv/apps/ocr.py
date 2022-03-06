@@ -10,7 +10,7 @@ from justengel_srv.utils import get_theme, template
 __all__ = ['router']
 
 
-router = APIRouter()
+router = APIRouter(tags=['ocr'])
 ocr = easyocr.Reader(['en'])
 
 
@@ -26,7 +26,7 @@ async def get_ocr(request: Request):
         res = ocr.readtext(await file.read())
         probable_text = '\n'.join((item[1] for item in res))
         return StreamingResponse(io.BytesIO(probable_text.encode()), media_type="text/plain")
-    return template('ocr.html', ctx)
+    return template('apps/ocr.html', ctx)
 
 
 # Create the app
