@@ -51,7 +51,7 @@ try:
     mcr.add_sidenav_item(theme, group='Apps')
     router.include_router(mortgage_calculator.router, prefix='/mortgage_calculator')
 
-    rmcr = Route(name='JS Mortgage Calculator', href='/apps/mortgage_calculator/raw/')
+    rmcr = Route(name='JS Mortgage Calculator', href='/apps/mortgage_calculator/js/')
     ROUTES.append(rmcr)
     rmcr.add_sidenav_item(theme, group='Apps')
     # router.include_router(mortgage_calculator.router, prefix='/mortgage_calculator/raw')
